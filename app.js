@@ -3,6 +3,7 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 const cors = require('cors')
 const authRouter = require('./api/router/authRoutes.js')
+const taskRouter = require('./api/router/taskRoutes.js')
 
 const app = express()
 const connection = async () => {
@@ -20,6 +21,7 @@ connection();
 app.use(cors())
 app.use(express.json())
 app.use('/auth', authRouter)
+app.use('/', taskRouter)
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Servidor iniciado en el puerto ${process.env.PORT}`)

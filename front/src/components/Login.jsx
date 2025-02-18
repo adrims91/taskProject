@@ -24,7 +24,7 @@ const Login = () => {
   return (
     <>
       <div className="container text-center d-flex vh-100 justify-content-center align-items-center">
-        <div className="row shadow p-5">
+        <div className="row shadow p-5 border">
           <div className="col">
             <h1 className="fs-1 fw-bold text-secondary text-nowrap">
               Iniciar sesión
@@ -49,7 +49,7 @@ const Login = () => {
             <p>No tienes cuenta?</p>
             <button
               onClick={() => navigate("/register")}
-              className="btn border"
+              className="btn border shadow"
             >
               Regístrate
             </button>
