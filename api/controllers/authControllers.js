@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
-  const { password, email } = req.body;
-  if (!password || !email) {
+  const { name, surname, password, email } = req.body;
+  if (!name || !surname || !password || !email) {
     return res.status(400).json({ error: "Faltan datos obligatorios" });
   }
   if (password.length < 8) {
@@ -27,6 +27,8 @@ const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
+      name,
+      surname,
       email,
       password: hashedPassword, 
     });

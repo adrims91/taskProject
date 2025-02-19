@@ -7,3 +7,5 @@ const HomeAuthenticated = () => {
         </div>
     )
 }
+
+export default HomeAuthenticated;

@@ -3,6 +3,8 @@ import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { state, register } = useContext(AuthContext);
@@ -11,6 +13,8 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
+      name,
+      surname,
       email,
       password,
     };
@@ -30,29 +34,30 @@ const Register = () => {
             Ya tienes una cuenta?
             <span
               onClick={() => navigate("/login")}
-              className="underline font-bold"
+              className="underline font-bold ml-2"
             >
               Inicia sesión
             </span>
           </p>
-       
-        <div>
-          <input className="border p-3 m-1 rounded-2xl" type="text" placeholder="Nombre"/>
-          <input className="border p-3 m-1 rounded-2xl" type="text" placeholder="Apellido" />
+       <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-2 w-100">
+          <input required onChange={(e) => setName(e.target.value)} value={name} className="border p-3 rounded-2xl mr-1" type="text" placeholder="Nombre"/>
+          <input required onChange={(e) => setSurname(e.target.value)} value={surname} className="border p-3 rounded-2xl ml-1" type="text" placeholder="Apellido" />
         </div>
         <div>
-          <input className="border p-3 m-1 w-100 rounded-2xl" type="email" placeholder="Introduce un email"/>
+          <input required onChange={(e) => setEmail(e.target.value)} value={email} className="border p-3 mt-1 w-100 rounded-2xl" type="email" placeholder="Introduce un email"/>
         </div>
         <div>
-          <input className="border p-3 m-1 w-100 rounded-2xl" type="email" placeholder="Introduce una contraseña"/>
+          <input required onChange={(e) => setPassword(e.target.value)} value={password} className="border p-3 mt-1 w-100 rounded-2xl" type="password" placeholder="Introduce una contraseña"/>
         </div>
         <div>
-          <input type="checkbox"  className="m-2 size-4"/>
+          <input type="checkbox" required  className="m-2 size-4"/>
           <label>Acepto los <small className="underline text-blue-400">Terminos y Condiciones</small></label>
         </div>
-        <button className="border p-3 w-100 mt-3 bg-blue-400 rounded-2xl">
+        <button className="cursor-pointer border p-3 w-100 mt-3 bg-blue-400 rounded-2xl">
           Crear Cuenta
         </button>
+        </form>
         </div>
       </div>
     </>
