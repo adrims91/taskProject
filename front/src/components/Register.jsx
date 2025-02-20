@@ -54,8 +54,8 @@ const Register = () => {
           <input type="checkbox" required  className="m-2 size-4"/>
           <label>Acepto los <small className="underline text-blue-400">Terminos y Condiciones</small></label>
         </div>
-        <button className="cursor-pointer border p-3 w-100 mt-3 bg-blue-400 rounded-2xl">
-          Crear Cuenta
+        <button className="cursor-pointer text-2xl border p-3 w-100 mt-3 bg-blue-400 rounded-2xl">
+          Crear cuenta
         </button>
         </form>
         </div>
