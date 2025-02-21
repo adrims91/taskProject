@@ -13,7 +13,7 @@ const Login = () => {
     if (state.isAuthenticated){
       navigate('/')
     }
-  }, [])
+  }, [state.isAuthenticated])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,9 +23,6 @@ const Login = () => {
     };
     try {
       await login(formData);
-      if (state.isAuthenticated){
-        navigate('/')
-      }
     } catch (error) {
       console.error(error.message);
     }
@@ -33,7 +30,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center h-screen bg-neutral-200">
+      <div className="flex items-center justify-center h-screen bg-white">
         <div className="grid-cols-subgrid shadow-2xl p-5">
           <h1 className="text-4xl mb-3 text-center">Inicio de sesión</h1>
           <form onSubmit={handleSubmit}>

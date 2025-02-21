@@ -41,20 +41,20 @@ const Register = () => {
           </p>
        <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 w-100">
-          <input required onChange={(e) => setName(e.target.value)} value={name} className="border p-3 rounded-2xl mr-1" type="text" placeholder="Nombre"/>
-          <input required onChange={(e) => setSurname(e.target.value)} value={surname} className="border p-3 rounded-2xl ml-1" type="text" placeholder="Apellido" />
+          <input required onChange={(e) => setName(e.target.value)} value={name} className="border p-3 rounded-2xl mr-1 bg-white" type="text" placeholder="Nombre"/>
+          <input required onChange={(e) => setSurname(e.target.value)} value={surname} className="border p-3 rounded-2xl ml-1 bg-white" type="text" placeholder="Apellido" />
         </div>
         <div>
-          <input required onChange={(e) => setEmail(e.target.value)} value={email} className="border p-3 mt-1 w-100 rounded-2xl" type="email" placeholder="Introduce un email"/>
+          <input required onChange={(e) => setEmail(e.target.value)} value={email} className="border p-3 mt-1 w-100 rounded-2xl bg-white" type="email" placeholder="Introduce un email"/>
         </div>
         <div>
-          <input required onChange={(e) => setPassword(e.target.value)} value={password} className="border p-3 mt-1 w-100 rounded-2xl" type="password" placeholder="Introduce una contraseña"/>
+          <input required onChange={(e) => setPassword(e.target.value)} value={password} className="border p-3 mt-1 w-100 rounded-2xl bg-white" type="password" placeholder="Introduce una contraseña"/>
         </div>
         <div>
           <input type="checkbox" required  className="m-2 size-4"/>
-          <label>Acepto los <small className="underline text-blue-400">Terminos y Condiciones</small></label>
+          <label>Acepto los <small className="underline text-blue-300">Terminos y Condiciones</small></label>
         </div>
-        <button className="cursor-pointer text-2xl border p-3 w-100 mt-3 bg-blue-400 rounded-2xl">
+        <button className="cursor-pointer text-2xl border p-3 w-100 mt-3 bg-blue-300 rounded-2xl font-bold">
           Crear cuenta
         </button>
         </form>
