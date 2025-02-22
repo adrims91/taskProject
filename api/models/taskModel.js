@@ -14,6 +14,10 @@ const taskSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    date: {
+        type: Date,
+        required: true,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
@@ -24,6 +28,8 @@ const taskSchema = new mongoose.Schema({
         required: true
     }
 })
+
+
 
 const Task = mongoose.model('Task', taskSchema)
 

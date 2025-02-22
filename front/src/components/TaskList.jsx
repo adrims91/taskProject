@@ -1,15 +1,17 @@
-import React, {useContext} from "react"
+import React, { useContext } from "react";
+import { TaskContext } from "../context/TaskContext";
 
 const TaskList = () => {
+  const { state } = useContext(TaskContext);
 
-
-    const {state} = useContext()
-
-    return (
-        <ul>
-            <li></li>
-        </ul>
-    )
-}
+  return (
+    <>
+    {state.tasks.length > 1 ? <ul>
+        <li></li>
+      </ul> : 'Este usuario no tiene tareas'}
+      
+    </>
+  );
+};
 
 export default TaskList;
