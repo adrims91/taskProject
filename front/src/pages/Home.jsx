@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../context/AuthContext";
 import Register from "../components/Register";
 import HomeAuthenticated from "./HomeAuthenticated";
 

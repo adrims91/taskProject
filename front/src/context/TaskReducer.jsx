@@ -1,5 +1,5 @@
 export const TaskInitialState = {
-    tasks: [],
+    tasks: JSON.parse(sessionStorage.getItem('tasks')) || [],
     message: null,
     error: null
 }
@@ -9,7 +9,7 @@ export const TaskReducer = (state, action) => {
         case 'ADD_TASK_SUCCESS':
             return {
                 ...state,
-                tasks: [...state, action.payload.task],
+                message: action.payload.message,
 
             }
         case 'ADD_TASK_ERROR':

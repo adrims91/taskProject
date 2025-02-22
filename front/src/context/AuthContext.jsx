@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         const errorData = await response.json();
         dispatch({ type: 'REGISTER_ERROR', payload: { message: errorData.error } });
-      }
+      };
     } catch (error) {
       dispatch({ type: 'REGISTER_ERROR', payload: { message: error.message } });
     }
@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.user))
+        sessionStorage.setItem('token', data.token)
+        sessionStorage.setItem('user', JSON.stringify(data.user))
         dispatch({ type: 'LOGIN_SUCCESS', payload: { "message": data.message, "user": data.user, "token": data.token } });
       } else {
         const errorData = await response.json();

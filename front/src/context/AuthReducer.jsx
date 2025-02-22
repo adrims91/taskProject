@@ -1,7 +1,7 @@
 export const AuthInitialState = {
-    user: localStorage.getItem('user') || null,
-    isAuthenticated: !!localStorage.getItem('token'),
-    token: localStorage.getItem('token'),
+    user: JSON.parse(sessionStorage.getItem('user')) || {},
+    isAuthenticated: !!sessionStorage.getItem('token'),
+    token: sessionStorage.getItem('token'),
     message: null,
     error: null
 }

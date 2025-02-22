@@ -5,7 +5,7 @@ const authToken = require('../middleware/authToken.js')
 
 taskRouter.get('/tasks/:userId', authToken, getTasks)
 taskRouter.get('/tasks/:id', getTask)
-taskRouter.post('/tasks', createTask)
+taskRouter.post('/tasks', authToken, createTask)
 taskRouter.put('/tasks/:id', updateTask)
 taskRouter.delete('/tasks/:id', deleteTask)
 
