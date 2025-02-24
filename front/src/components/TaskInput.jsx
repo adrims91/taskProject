@@ -1,31 +1,43 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TaskContext } from "../context/TaskContext";
-import { toast } from "react-toastify";
+import { AuthContext } from "../context/AuthContext";
 
 const TaskInput = () => {
-  const {state:taskState ,createTask} = useContext(TaskContext)
+  const {state:taskState ,createTask, getTasks} = useContext(TaskContext)
+  const {state: authState} = useContext(AuthContext)
   const [newTask, setNewtask] = useState(false);
   const [title, setTitle] = useState("");
   const [date, setDate] = useState('');
 
   
+  useEffect(() => {
+    getTasks(authState.user._id)
+  }, [authState.user._id])
+
 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       await createTask({title, date})
-      if (taskState.message){
-        toast.success(taskState.message)
-        setTitle('')
-        setDate('')
-      }else {
-        toast.error(taskState.error)
-      }
+      await getTasks(authState.user._id)
     }catch(error){
-      toast.error(error.message)
+      console.error(error)
     }
   }
+
+  useEffect(() => {
+    const { success } = taskState;
+    if (success){
+      setTitle('')
+      setDate('')
+      setNewtask(false)
+      taskState.success = false
+    }
+  }, [taskState.success])
+
+
+  console.log(taskState.success)
 
   return (
     <>

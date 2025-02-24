@@ -1,7 +1,10 @@
+const cachedTasks = JSON.parse(sessionStorage.getItem('tasks')) || [];
+
 export const TaskInitialState = {
-    tasks: JSON.parse(sessionStorage.getItem('tasks')) || [],
+    tasks: cachedTasks,
     message: null,
-    error: null
+    error: null,
+    success: false
 }
 
 export const TaskReducer = (state, action) => {
@@ -10,12 +13,14 @@ export const TaskReducer = (state, action) => {
             return {
                 ...state,
                 message: action.payload.message,
+                success: true
 
             }
         case 'ADD_TASK_ERROR':
             return {
                 ...state,
-                error: action.payload.error
+                error: action.payload.error,
+                success: false
             }
         case 'GET_TASKS_SUCCESS':
             return {
@@ -27,6 +32,22 @@ export const TaskReducer = (state, action) => {
             return {
                 ...state,
                 error: action.payload.error
+            }
+        case 'DELETE_TASKS_SUCCESS':
+            return {
+                ...state,
+                message: action.payload.message
+            }
+        case 'DELETE_TASKS_ERROR':
+            return {
+                ...state,
+                error: action.payload.message
+            }
+        case 'CLEAR_MESSAGES':
+            return {
+                ...state,
+                message: null,
+                error: null
             }
         default:
             return state

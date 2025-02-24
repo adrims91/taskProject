@@ -2,18 +2,9 @@ import TaskList from "../components/TaskList";
 import TaskInput from "../components/TaskInput";
 import TaskFilters from "../components/TaskFilters"
 import { ToastContainer } from "react-toastify";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { TaskContext } from "../context/TaskContext";
 
 const HomeAuthenticated = () => {
 
-  const {state: authState} = useContext(AuthContext)
-  const {getTasks} = useContext(TaskContext)
-
-  useEffect(() => {
-    getTasks(authState.user._id)
-  }, [authState.user._id, sessionStorage.getItem('tasks')])
 
   return (
     <>
@@ -40,7 +31,7 @@ const HomeAuthenticated = () => {
             <TaskInput />
         </div>
         <div className="flex flex-1 justify-center">
-          <div className="w-full text-center">
+          <div className="w-full lg:w-250 text-center">
             <h1 className="text-6xl items-center mt-10">Tareas</h1>
             <div className="mt-20">
               <TaskList />

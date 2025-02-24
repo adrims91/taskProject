@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import { AuthInitialState, AuthReducer } from "./authReducer";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
@@ -41,6 +42,7 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
         sessionStorage.setItem('token', data.token)
         sessionStorage.setItem('user', JSON.stringify(data.user))
+        toast.success(data.message)
         dispatch({ type: 'LOGIN_SUCCESS', payload: { "message": data.message, "user": data.user, "token": data.token } });
       } else {
         const errorData = await response.json();
