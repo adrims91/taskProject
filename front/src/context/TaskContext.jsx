@@ -93,8 +93,32 @@ export const TaskProvider = ({ children }) => {
     }
   }
 
+  const completeTask = async (id) => {
+      const token = sessionStorage.getItem('token')
+      try {
+        const response = await fetch(`http://localhost:3000/doneTask/${id}`, {
+          method: 'PUT',
+          headers: {
+            "content-type": "application/json",
+            "authorization": "Bearer " + token
+          }
+        })
+        const data = await response.json()
+        if (response.ok){
+          toast.success(data.message)
+          dispatch({type: 'COMPLETE_TASK_SUCCESS', payload: {"message": data.message}})
+        }else {
+          toast.error(data.error)
+          dispatch({type: 'COMPLETE_TASK_ERROR', payload: {"error": data.error}})
+        }
+      }catch(error) {
+        toast.error(error.message)
+        dispatch({type: 'COMPLETE_TASK_ERROR', payload: {"error": error.message}})
+      }
+    }
+
   return (
-    <TaskContext.Provider value={{ state, dispatch, getTasks, createTask, deleteTask }}>
+    <TaskContext.Provider value={{ state, dispatch, getTasks, createTask, deleteTask, completeTask }}>
       {children}
     </TaskContext.Provider>
   );
