@@ -53,8 +53,17 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const logout = async () => {
+    try {
+      dispatch({type: 'LOGOUT_SUCCESS', payload: {"message": 'Usuario desconectado correctamente'}})
+
+    }catch(error) {
+      dispatch({type: 'LOGOUT_ERROR', payload: {"error": 'Ha ocurrido un error desconocido'}})
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ state, dispatch, register, login }}>
+    <AuthContext.Provider value={{ state, dispatch, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

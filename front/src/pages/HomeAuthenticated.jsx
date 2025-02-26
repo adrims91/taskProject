@@ -5,15 +5,17 @@ import { ToastContainer } from "react-toastify";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { parseISO, startOfWeek, endOfWeek, isWithinInterval, startOfMonth, endOfMonth } from "date-fns";
+import { TaskContext } from "../context/TaskContext";
 
 const HomeAuthenticated = () => {
-  const { state: authState } = useContext(AuthContext);
+  const { state: authState, logout } = useContext(AuthContext);
+  const {state: taskState} = useContext(TaskContext)
   const [today, setToday] = useState([]);
   const [week, setWeek] = useState([]);
   const [month, setMonth] = useState([]);
 
   useEffect(() => {
-    const getTodayTasks = async (userId) => {
+    const getTasks = async (userId) => {
       const token = sessionStorage.getItem("token");
       try {
         const response = await fetch(`http://localhost:3000/tasks/${userId}`, {
@@ -24,87 +26,41 @@ const HomeAuthenticated = () => {
         });
         const data = await response.json();
         if (response.ok) {
-          data.tasks.map((task) => {
-            if (
-              task.date.slice(0, 10) === new Date().toISOString().slice(0, 10)
-            ) {
-              setToday(prevState => [...prevState, task]);
-            }
-          });
-        }
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
-    getTodayTasks(authState.user._id);
-  }, []);
-
-  useEffect(() => {
-    const getWeekTasks = async (userId) => {
-      const token = sessionStorage.getItem("token");
-      try {
-        const response = await fetch(`http://localhost:3000/tasks/${userId}`, {
-          headers: {
-            "content-type": "application/json",
-            authorization: "Bearer " + token,
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
+          const todayDate = new Date().toISOString().slice(0, 10);
           const today = new Date();
           const startWeek = startOfWeek(today);
           const endWeek = endOfWeek(today);
-
-          data.tasks.map((task) => {
-            const taskDate = parseISO(task.date);
-            if (
-              isWithinInterval(taskDate, { start: startWeek, end: endWeek })
-            ) {
-              setWeek(prevState => [...prevState, task]);
-            }
-          });
-        }
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
-    getWeekTasks(authState.user._id);
-  }, []);
-
-  useEffect(() => {
-    const getMonthTasks = async (userId) => {
-      const token = sessionStorage.getItem("token");
-      try {
-        const response = await fetch(`http://localhost:3000/tasks/${userId}`, {
-          headers: {
-            "content-type": "application/json",
-            authorization: "Bearer " + token,
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          const today = new Date();
           const startMonth = startOfMonth(today);
           const endMonth = endOfMonth(today);
 
-          data.tasks.map((task) => {
+          const todayTasks = [];
+          const weekTasks = [];
+          const monthTasks = [];
+
+          data.tasks.forEach((task) => {
             const taskDate = parseISO(task.date);
-            if (
-              isWithinInterval(taskDate, { start: startMonth, end: endMonth })
-            ) {
-              setMonth(prevState => [...prevState, task]);
+            if (task.date.slice(0, 10) === todayDate) {
+              todayTasks.push(task);
+            }
+            if (isWithinInterval(taskDate, { start: startWeek, end: endWeek })) {
+              weekTasks.push(task);
+            }
+            if (isWithinInterval(taskDate, { start: startMonth, end: endMonth })) {
+              monthTasks.push(task);
             }
           });
+
+          setToday(todayTasks);
+          setWeek(weekTasks);
+          setMonth(monthTasks);
         }
       } catch (error) {
         console.error(error.message);
       }
     };
 
-    getMonthTasks(authState.user._id);
-  }, []);
+    getTasks(authState.user._id);
+  }, [taskState.tasks.length]);
 
 
   return (
@@ -119,9 +75,10 @@ const HomeAuthenticated = () => {
             />
             <h1 className="text-2xl ml-3 font-bold underline">Task Center</h1>
           </div>
-
           <TaskFilters />
-
+          <div className="mt-5 text-center">
+          <button onClick={logout} className="border p-2 bg-red-200 rounded-full w-full hover:cursor-pointer">Cerrar sesión</button>
+          </div>
           <div className="grid grid-cols-1 h-50 w-full mt-5 items-center">
             <ul className="grid-cols-subgrid">
               <li className="font-bold">Tareas para hoy: {today.length}</li>
@@ -130,6 +87,8 @@ const HomeAuthenticated = () => {
             </ul>
           </div>
           <TaskInput />
+        </div>
+        <div>
         </div>
         <div className="flex flex-1 justify-center">
           <div className="w-full lg:w-250 text-center">

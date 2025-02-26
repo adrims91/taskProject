@@ -38,6 +38,20 @@ export const AuthReducer = (state, action) => {
                 token: null,
                 isAuthenticated: false
             }
+        case 'LOGOUT_SUCCESS':
+            sessionStorage.removeItem('user')
+            sessionStorage.removeItem('token')
+            sessionStorage.removeItem('tasks')
+            return {
+                ...state,
+                isAuthenticated: false,
+                message: action.payload.message
+            }
+            case 'LOGOUT_ERROR':
+                return {
+                    ...state,
+                    error: action.payload.error
+                }
         default:
             return state
     }

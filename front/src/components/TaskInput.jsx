@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { TaskContext } from "../context/TaskContext";
 import { AuthContext } from "../context/AuthContext";
+import { isBefore, startOfToday } from 'date-fns'
+import { toast } from "react-toastify";
 
 const TaskInput = () => {
   const {state:taskState ,createTask, getTasks} = useContext(TaskContext)
@@ -19,6 +21,11 @@ const TaskInput = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      const today = startOfToday()
+      if (isBefore(date, today)){
+        toast.error('El día no puede ser anterior a hoy')
+        return;
+      }
       await createTask({title, date})
       await getTasks(authState.user._id)
     }catch(error){
@@ -74,6 +81,14 @@ const TaskInput = () => {
             className="border text-center justify-center w-full rounded-2xl mb-3 hover: cursor-pointer font-mono bg-gray-100"
             type="submit"
             value={"Confirmar"}
+          />
+          <input
+          onClick={() => {
+            setNewtask(false)
+          }}
+            className="border text-center justify-center w-full rounded-2xl mb-3 hover: cursor-pointer font-mono bg-gray-100"
+            type="button"
+            value={"Cancelar"}
           />
         </form>
       )}

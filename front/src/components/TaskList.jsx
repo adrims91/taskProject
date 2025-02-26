@@ -23,14 +23,14 @@ const TaskList = () => {
                   <div onClick={async () => {
                     await deleteTask(task._id)
                     await getTasks(authState.user._id)
-                    }} className="ml-10 p-1"><FaTrash /></div>  <div>{task.title}</div> 
+                    }} className="ml-10 p-1 hover:cursor-pointer"><FaTrash /></div>  <div>{task.title}</div> 
                   {!task.isDone ? <div><small className="mr-1 text-sm text-red-600">Caduca el {formatDate(task.date)}</small> <small onClick={async () => {
                     await changeTaskStatus(task._id)
                     await getTasks(authState.user._id)
-                  }} className="mr-1">✅</small> </div> : <div className="flex"><small className="mr-2 text-sm text-green-600">Completada</small><CiUndo onClick={async () => {
+                  }} className="mr-1 hover:cursor-pointer">✅</small> </div> : <div className="flex"><small className="mr-2 text-sm text-green-600">Completada</small><CiUndo onClick={async () => {
                     await changeTaskStatus(task._id)
                     await getTasks(authState.user._id)
-                  }} className="mr-1"/> </div>} 
+                  }} className="mr-1 hover:cursor-pointer"/> </div>} 
                   
                 </li>
               

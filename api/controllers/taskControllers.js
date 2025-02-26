@@ -99,7 +99,7 @@ const getTask = async (req, res) => {
   }
 };
 
-const completeTask = async (req, res) => {
+const changeTaskStatus = async (req, res) => {
   const {id} = req.params;
   const user = req.user;
   try {
@@ -112,9 +112,9 @@ const completeTask = async (req, res) => {
       return res.status(401).json({error: "Esa tarea no es tuya"})
     }
   
-    task.isDone = true
+    task.isDone = !task.isDone
     await task.save();
-    res.status(200).json({message: 'Tarea completada correctamente'})
+    res.status(200).json({message: 'Tarea actualizada correctamente'})
 
   }catch(error) {
     return res.status(500).json({error: error.message})
@@ -123,4 +123,4 @@ const completeTask = async (req, res) => {
 
 }
 
-module.exports = { createTask, getTask, deleteTask, updateTask, getTasks, completeTask };
+module.exports = { createTask, getTask, deleteTask, updateTask, getTasks, changeTaskStatus };
