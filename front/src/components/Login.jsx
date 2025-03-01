@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import '../../styles/login.css'
+import { ToastContainer } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +12,9 @@ const Login = () => {
 
   useEffect(() => {
     if (state.isAuthenticated){
-      navigate('/')
+      setTimeout(() => {
+        navigate('/')
+      }, 1500);
     }
   }, [state.isAuthenticated])
 
@@ -30,8 +33,9 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center h-screen bg-white">
-        <div className="grid-cols-subgrid shadow-2xl p-5">
+      <div className="flex items-center justify-center h-screen bg-gray-200">
+        <img className="absolute size-235" src="../../images/todays_plans_wide.jpg" alt="" />
+        <div className="rounded-4xl shadow-2xl p-5 absolute">
           <h1 className="text-4xl mb-3 text-center">Inicio de sesión</h1>
           <form onSubmit={handleSubmit}>
             <div className="grid">
@@ -54,6 +58,7 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
-  const { name, surname, password, email } = req.body;
-  if (!name || !surname || !password || !email) {
+  const { name, surname, password, email, username } = req.body;
+  if (!name || !surname || !password || !email || !username) {
     return res.status(400).json({ error: "Faltan datos obligatorios" });
   }
   if (password.length < 8) {
@@ -22,7 +22,12 @@ const register = async (req, res) => {
   try {
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
-      return res.status(400).json({ error: "El usuario ya existe." });
+      return res.status(400).json({ error: "El email ya existe." });
+    }
+
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return res.status(400).json({ error: "El nombre de usuario ya existe." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -30,6 +35,7 @@ const register = async (req, res) => {
       name,
       surname,
       email,
+      username,
       password: hashedPassword, 
     });
 

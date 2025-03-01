@@ -2,6 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 import { TaskReducer, TaskInitialState } from "./TaskReducer.jsx";
 import { toast } from "react-toastify";
 
+
 export const TaskContext = createContext();
 
 export const TaskProvider = ({ children }) => {
@@ -17,10 +18,10 @@ export const TaskProvider = ({ children }) => {
     clearMessages();
   }, [state.message, state.error]);
 
-  const getTasks = async (userId) => {
+  const getTasks = async () => {
     const token = sessionStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:3000/tasks/${userId}`, {
+      const response = await fetch(`http://localhost:3000/tasks`, {
         method: "GET",
         headers: {
           "content-type": "application/json",
@@ -117,8 +118,71 @@ export const TaskProvider = ({ children }) => {
       }
     }
 
+  const getCompletedTasks = async () => {
+    const token = sessionStorage.getItem('token')
+    try {
+      const response = await fetch(`http://localhost:3000/completedTasks`, {
+        method: 'GET',
+        headers: {
+          "authorization": "Bearer " + token
+        }
+      })
+      const data = await response.json()
+      if (response.ok) {
+        dispatch({type: 'GET_COMPLETED_TASKS_SUCCESS', payload: {"tasks": data.tasks}})
+      }else {
+        toast.error(data.error)
+        dispatch({type: 'GET_COMPLETED_TASKS_ERROR', payload: {"error": data.error}})
+      }
+    }catch(error) {
+      dispatch({type: 'GET_COMPLETED_TASKS_ERROR', payload: {"error": error.message}})
+    }
+  }
+
+  const getTodayTasks = async () => {
+    const token = sessionStorage.getItem('token')
+    try {
+      const response = await fetch(`http://localhost:3000/todayTasks`, {
+        method: 'GET',
+        headers: {
+          "authorization": "Bearer " + token
+        }
+      })
+      const data = await response.json()
+      console.log(data)
+      if (response.ok) {
+        dispatch({type: 'GET_TODAY_TASKS_SUCCESS', payload: {"tasks": data.tasks}})
+      }else {
+        toast.error(data.error)
+        dispatch({type: 'GET_TODAY_TASKS_ERROR', payload: {"error": data.error}})
+      }
+    }catch(error) {
+      dispatch({type: 'GET_TODAY_TASKS_ERROR', payload: {"error": error.message}})
+    }
+  }
+  const getCaducatedTasks = async () => {
+    const token = sessionStorage.getItem('token')
+    try {
+      const response = await fetch(`http://localhost:3000/caducatedTasks`, {
+        method: 'GET',
+        headers: {
+          "authorization": "Bearer " + token
+        }
+      })
+      const data = await response.json()
+      if (response.ok) {
+        dispatch({type: 'GET_CADUCATED_TASKS_SUCCESS', payload: {"tasks": data.tasks}})
+      }else {
+        toast.error(data.error)
+        dispatch({type: 'GET_CADUCATED_TASKS_ERROR', payload: {"error": data.error}})
+      }
+    }catch(error) {
+      dispatch({type: 'GET_CADUCATED_TASKS_ERROR', payload: {"error": error.message}})
+    }
+  }
+
   return (
-    <TaskContext.Provider value={{ state, dispatch, getTasks, createTask, deleteTask, changeTaskStatus }}>
+    <TaskContext.Provider value={{ state, dispatch, getTasks, createTask, deleteTask, changeTaskStatus, getCompletedTasks, getTodayTasks, getCaducatedTasks }}>
       {children}
     </TaskContext.Provider>
   );

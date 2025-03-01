@@ -1,7 +1,6 @@
 import TaskList from "../components/TaskList";
 import TaskInput from "../components/TaskInput";
 import TaskFilters from "../components/TaskFilters";
-import { ToastContainer } from "react-toastify";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { parseISO, startOfWeek, endOfWeek, isWithinInterval, startOfMonth, endOfMonth } from "date-fns";
@@ -15,10 +14,10 @@ const HomeAuthenticated = () => {
   const [month, setMonth] = useState([]);
 
   useEffect(() => {
-    const getTasks = async (userId) => {
+    const getTasks = async () => {
       const token = sessionStorage.getItem("token");
       try {
-        const response = await fetch(`http://localhost:3000/tasks/${userId}`, {
+        const response = await fetch(`http://localhost:3000/tasks`, {
           headers: {
             "content-type": "application/json",
             authorization: "Bearer " + token,
@@ -99,7 +98,6 @@ const HomeAuthenticated = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </>
   );
 };

@@ -53,6 +53,36 @@ export const TaskReducer = (state, action) => {
                 ...state,
                 error: action.payload.error
             }
+        case 'GET_COMPLETED_TASKS_SUCCESS':
+            return {
+                ...state,
+                tasks: action.payload.tasks
+            }
+        case 'GET_COMPLETED_TASKS_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
+        case 'GET_TODAY_TASKS_SUCCESS':
+        return {
+            ...state,
+            tasks: action.payload.tasks
+        }
+        case 'GET_TODAY_TASKS_SUCCESS':
+        return {
+            ...state,
+            tasks: action.payload.tasks
+        }
+        case 'GET_CADUCATED_TASKS_SUCCESS':
+        return {
+            ...state,
+            tasks: action.payload.tasks
+        }
+        case 'GET_CADUCATED_TASKS_error':
+        return {
+            ...state,
+            error: action.payload.error
+        }
         case 'CLEAR_MESSAGES':
             return {
                 ...state,

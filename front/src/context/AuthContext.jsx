@@ -19,13 +19,16 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const data = await response.json();
+        toast.success(data.message)
         dispatch({ type: 'REGISTER_SUCCESS', payload: { message: data.message } });
       } else {
         const errorData = await response.json();
-        dispatch({ type: 'REGISTER_ERROR', payload: { message: errorData.error } });
+        toast.error(errorData.error)
+        dispatch({ type: 'REGISTER_ERROR', payload: { error: errorData.error } });
       };
     } catch (error) {
-      dispatch({ type: 'REGISTER_ERROR', payload: { message: error.message } });
+      toast.error(error.message)
+      dispatch({ type: 'REGISTER_ERROR', payload: { error: error.message } });
     }
   };
 

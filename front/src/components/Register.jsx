@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -7,6 +7,7 @@ const Register = () => {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("")
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -17,9 +18,16 @@ const Register = () => {
       surname,
       email,
       password,
+      username
     };
     try {
       await register(formData);
+      setName('')
+      setEmail('')
+      setPassword('')
+      setUsername('')
+      setSurname('')
+
     } catch (error) {
       console.error(error.message);
     }
@@ -46,6 +54,9 @@ const Register = () => {
         </div>
         <div>
           <input required onChange={(e) => setEmail(e.target.value)} value={email} className="border p-3 mt-1 w-100 rounded-2xl bg-white" type="email" placeholder="Introduce un email"/>
+        </div>
+        <div>
+          <input required onChange={(e) => setUsername(e.target.value)} value={username} className="border p-3 mt-1 w-100 rounded-2xl bg-white" type="text" placeholder="Introduce un nombre de usuario"/>
         </div>
         <div>
           <input required onChange={(e) => setPassword(e.target.value)} value={password} className="border p-3 mt-1 w-100 rounded-2xl bg-white" type="password" placeholder="Introduce una contraseña"/>

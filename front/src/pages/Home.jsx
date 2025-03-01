@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import Register from "../components/Register";
 import HomeAuthenticated from "./HomeAuthenticated";
+import { ToastContainer } from "react-toastify";
 
 const Home = () => {
   const { state } = useContext(AuthContext);
@@ -19,7 +20,7 @@ const Home = () => {
           <Register />
         </div>
       </div> : <HomeAuthenticated />}
-      
+      <ToastContainer />
     </>
   );
 };

@@ -34,7 +34,7 @@ const TaskList = () => {
                   
                 </li>
               
-            )) : <h2>Este usuario no tiene tareas</h2>}
+            )) : <h2>Este usuario no tiene tareas pendientes</h2>}
       </ul>
       
     </>

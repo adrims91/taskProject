@@ -1,3 +1,4 @@
+const { startOfToday, endOfToday } = require('date-fns')
 const Task = require("../models/taskModel.js");
 
 const createTask = async (req, res) => {
@@ -16,6 +17,10 @@ const createTask = async (req, res) => {
       return res
         .status(400)
         .json({ error: "Ya existe una tarea con ese nombre" });
+    }
+    const tasks = await Task.find()
+    if (tasks.length === 10){
+      return res.status(400).json({error: 'No puedes tener más de 10 tareas activas, elimina o completa alguna de las que ya tienes.'})
     }
 
     const newTask = new Task({
@@ -72,12 +77,11 @@ const deleteTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   const user = req.user;
-  const { userId } = req.params;
 
   if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
 
   try {
-    const tasks = await Task.find({ user: userId });
+    const tasks = await Task.find({ user: user.id, isDone: false });
     res.status(200).json({ tasks });
   } catch (error) {
     res.status(500).json({ error: 'Error de servidor', details: error.message });
@@ -98,6 +102,82 @@ const getTask = async (req, res) => {
     res.status(500).json({error: 'Error de servidor', details: error})
   }
 };
+
+const getCompletedTasks = async (req, res) => {
+  try {
+    const user = req.user
+    if (!user) {
+      return res.status(400).json({ error: 'Usuario no autenticado.' });
+    }
+
+    const tasks = await Task.find({ user: user.id, isDone: true });
+
+    if (tasks.length === 0) {
+      return res.status(404).json({ error: 'No tienes tareas completadas.' });
+    }
+
+    res.status(200).json({ tasks });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error del servidor.', details: error.message });
+  }
+};
+
+const getTodayTasks = async (req, res) => {
+  const user = req.user;
+
+  if (!user) {
+    return res.status(404).json({ error: 'Usuario no válido' });
+  }
+
+  try {
+    const startOfTodayDate = startOfToday();
+    const endOfTodayDate = endOfToday();
+
+    const todayTasks = await Task.find({
+      user: user.id,
+      date: { 
+        $gte: startOfTodayDate,
+        $lte: endOfTodayDate,
+      },
+    });
+
+    res.status(200).json({ tasks: todayTasks });
+  } catch (error) {
+    console.error('Error al obtener tareas:', error);
+    res.status(500).json({ error: 'Error al obtener tareas' });
+  }
+};
+
+const getCaducatedTasks = async (req, res) => {
+  const user = req.user;
+
+  if (!user) {
+    return res.status(404).json({ error: 'Usuario no válido' });
+  }
+
+  try {
+    const startOfTodayDate = startOfToday();
+
+    const caducatedTasks = await Task.find({
+      user: user.id,
+      date: { 
+        $lte: startOfTodayDate,
+      },
+    });
+    if (caducatedTasks.length === 0){
+      return res.status(400).json({error: 'No tienes tareas caducadas'})
+    }
+
+    res.status(200).json({ tasks: caducatedTasks });
+  } catch (error) {
+    console.error('Error al obtener tareas:', error);
+    res.status(500).json({ error: 'Error al obtener tareas' });
+  }
+};
+
+
+
 
 const changeTaskStatus = async (req, res) => {
   const {id} = req.params;
@@ -123,4 +203,4 @@ const changeTaskStatus = async (req, res) => {
 
 }
 
-module.exports = { createTask, getTask, deleteTask, updateTask, getTasks, changeTaskStatus };
+module.exports = { createTask, getTask, deleteTask, updateTask, getTasks, changeTaskStatus, getCompletedTasks, getTodayTasks, getCaducatedTasks };
